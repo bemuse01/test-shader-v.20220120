@@ -38,7 +38,8 @@ export default class{
             uniforms: {
                 uMouse: {value: new THREE.Vector2(0, 0)},
                 uRes: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
-                uRatio: {value: this.size.el.h / this.size.el.w}
+                uRatio: {value: this.size.el.h / this.size.el.w},
+                uTime: {value: null}
             }
         })
         this.mesh = new THREE.Mesh(geometry, material)

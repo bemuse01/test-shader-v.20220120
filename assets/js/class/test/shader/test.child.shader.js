@@ -40,11 +40,9 @@ export default {
 
             // test 1
             vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
-            vec2 mouse = uMouse * 0.5;
-            float mx = mouse.x * uRes.x;
-            float my = mouse.y * uRes.y;
+            vec2 mouse = uMouse * uRes * 0.5;
 
-            float dist = (100.0 - clamp(distance(st, vec2(mx, my)), 0.0, 100.0)) / 100.0;
+            float dist = (100.0 - clamp(distance(st, mouse), 0.0, 100.0)) / 100.0;
             vec3 c = vec3(dist);
 
             
