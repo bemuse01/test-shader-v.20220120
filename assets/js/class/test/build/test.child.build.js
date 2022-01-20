@@ -10,6 +10,12 @@ export default class{
             height: 60
         }
 
+        this.ix = 0
+        this.iy = 0
+        this.vx = 0
+        this.vy = 0
+        this.friction = 0.15
+
         this.init(group)
     }
 
@@ -53,11 +59,22 @@ export default class{
     // on mouse move
     onMousemove(e){
         const {clientX, clientY} = e
+
+        this.ix = clientX
+        this.iy = clientY
+    }
+
+
+    // animate
+    animate(){
         const {w, h} = this.size.el
 
-        const x = (clientX / w) * 2 - 1
-        const y = -(clientY / h) * 2 + 1
-        
+        this.vx += (this.ix - this.vx) * this.friction
+        this.vy += (this.iy - this.vy) * this.friction
+
+        const x = (this.vx / w) * 2 - 1
+        const y = -(this.vy / h) * 2 + 1
+
         this.mesh.material.uniforms['uMouse'].value = new THREE.Vector2(x, y)
     }
 }
