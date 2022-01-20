@@ -47,6 +47,7 @@ export default {
             float dist = (100.0 - clamp(distance(st, vec2(mx, my)), 0.0, 100.0)) / 100.0;
             vec3 c = vec3(dist);
 
+            
 
             gl_FragColor = vec4(c, 1.0);
         }
