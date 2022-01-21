@@ -1,16 +1,19 @@
 import * as THREE from '../../../lib/three.module.js'
-import  Shader from '../shader/test.child.shader.js'
+import Shader from '../shader/test.child.shader.js'
+import Method from '../method/test.child.method.js'
 
 export default class{
     constructor({group, size}){
         this.size = size
 
+        const {obj, el} = size
+
         this.param = {
             width: 100,
             height: 60,
             blur: 1,
-            boundary: 30,
-            radius: 100
+            boundary: 0.3,
+            radius: 0.1
         }
 
         this.ix = 0
@@ -19,13 +22,28 @@ export default class{
         this.vy = 0
         this.friction = 0.15
 
+        this.imgLoadCount = 0
+        this.src = [
+            'assets/src/1.jpg',
+            'assets/src/2.jpg'
+        ]
+        this.img = []
+
+        const rw = this.param.width / obj.w
+        const rh = this.param.height / obj.h
+
+        this.tw = ~~(rw * el.w)
+        this.th = ~~(rh * el.h)
+
         this.init(group)
     }
 
 
     // init
     init(group){
-        this.create(group)
+        this.load(group)
+
+        // this.create(group)
 
         window.addEventListener('mousemove', e => this.onMousemove(e))
     }
@@ -33,6 +51,8 @@ export default class{
 
     // create
     create(group){
+        const textures = this.img.map(img => new THREE.CanvasTexture(Method.createTextureFromCanvas({img, size: {w: this.tw, h: this.th}})))
+
         const geometry = new THREE.PlaneGeometry(this.param.width, this.param.height, 1, 1)
         const material = new THREE.ShaderMaterial({
             vertexShader: Shader.vertex,
@@ -45,12 +65,26 @@ export default class{
                 uTime: {value: 0},
                 uBoundary: {value: this.param.boundary},
                 uRadius: {value: this.param.radius},
-                uBlur: {value: this.param.blur}
+                uBlur: {value: this.param.blur},
+                uTexture: {value: textures}
             }
         })
         this.mesh = new THREE.Mesh(geometry, material)
 
         group.add(this.mesh)
+    }
+    load(group){
+        this.src.forEach((src, i) => {
+            const img = new Image()
+
+            img.onload = () => {
+                this.img[i] = img
+
+                if(i === this.src.length - 1) this.create(group)
+            }
+
+            img.src = src
+        })
     }
 
 
@@ -74,6 +108,8 @@ export default class{
 
     // animate
     animate(){
+        if(!this.mesh) return
+        
         const {w, h} = this.size.el
         const time = window.performance.now()
 

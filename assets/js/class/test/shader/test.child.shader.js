@@ -18,7 +18,8 @@ export default {
         uniform float uBoundary;
         uniform float uRadius;
         uniform float uBlur;
-
+        uniform sampler2D uTexture[2];
+        
         varying vec2 vUv;
 
         float circle(in vec2 _st, in float _radius, in float _blur){
@@ -47,15 +48,22 @@ export default {
             vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
             vec2 mouse = uMouse * uRes * 0.5;
 
+            float radius = uRadius * max(uRes.x, uRes.y);
+            float boundary = radius * uBoundary;
+
             float n = snoise3D(vec3(vUv * 10.0, uTime * 0.001));
             float e = executeNormalizing(n, 0.0, 1.0, -1.0, 1.0);
-            float r = (uRadius - uBoundary)  + uBoundary * e;
+            float r = (radius - boundary)  + boundary * e;
             float b = r - uBlur;
             float t = r - b;
 
             float d = (r - clamp(distance(st, mouse), b, r)) / t;
-            vec3 c = vec3(d);
+            // vec3 c = vec3(d);
 
+            vec4 tex1 = texture(uTexture[0], vUv);
+            vec4 tex2 = texture(uTexture[1], vUv);
+
+            vec4 finalTex = mix(tex1, tex2, d);
 
 
             // test 2 (ref example)
@@ -76,9 +84,8 @@ export default {
 
             // vec3 c = vec3(finalMask);
 
-            
 
-            gl_FragColor = vec4(c, 1.0);
+            gl_FragColor = finalTex;
         }
     `
 }
