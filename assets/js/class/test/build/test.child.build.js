@@ -20,7 +20,7 @@ export default class{
         this.iy = 0
         this.vx = 0
         this.vy = 0
-        this.friction = 0.15
+        this.friction = 0.1
 
         this.imgLoadCount = 0
         this.src = [
