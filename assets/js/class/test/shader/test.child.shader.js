@@ -47,13 +47,34 @@ export default {
             vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
             vec2 mouse = uMouse * uRes * 0.5;
 
-            float n = executeNormalizing(snoise3D(vec3(st * 0.01, uTime * 0.001)), 0.0, 1.0, -1.0, 1.0);
-            float r = (uRadius - uBoundary)  + uBoundary * n;
+            float n = snoise3D(vec3(vUv * 10.0, uTime * 0.001));
+            float e = executeNormalizing(n, 0.0, 1.0, -1.0, 1.0);
+            float r = (uRadius - uBoundary)  + uBoundary * e;
             float b = r - uBlur;
             float t = r - b;
 
             float d = (r - clamp(distance(st, mouse), b, r)) / t;
             vec3 c = vec3(d);
+
+
+
+            // test 2 (ref example)
+            // vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
+            // vec2 mouse = uMouse * uRes * 0.5;
+
+            // float offx = vUv.x + sin(vUv.y + uTime * .1);
+            // float offy = vUv.y - uTime * 0.1 - cos(uTime * .001) * .01;
+
+            // float r = uRadius;
+            // float b = r - uBlur;
+            // float t = r - b;
+
+            // float n = snoise3D(vec3(offx, offy, uTime * .1) * 8.) - 1.;
+            // float d = (r - clamp(distance(st, mouse), b, r)) / t * 1.25;
+
+            // float finalMask = smoothstep(0.4, 0.5, n + pow(d, 2.));
+
+            // vec3 c = vec3(finalMask);
 
             
 

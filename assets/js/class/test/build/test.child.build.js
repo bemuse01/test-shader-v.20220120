@@ -42,7 +42,7 @@ export default class{
                 uMouse: {value: new THREE.Vector2(0, 0)},
                 uRes: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
                 uRatio: {value: this.size.el.h / this.size.el.w},
-                uTime: {value: null},
+                uTime: {value: 0},
                 uBoundary: {value: this.param.boundary},
                 uRadius: {value: this.param.radius},
                 uBlur: {value: this.param.blur}
@@ -85,5 +85,6 @@ export default class{
 
         this.mesh.material.uniforms['uMouse'].value = new THREE.Vector2(x, y)
         this.mesh.material.uniforms['uTime'].value = time
+        // this.mesh.material.uniforms['uTime'].value += 0.01
     }
 }
