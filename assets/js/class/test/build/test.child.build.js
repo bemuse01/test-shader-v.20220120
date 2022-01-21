@@ -7,7 +7,10 @@ export default class{
 
         this.param = {
             width: 100,
-            height: 60
+            height: 60,
+            blur: 1,
+            boundary: 30,
+            radius: 100
         }
 
         this.ix = 0
@@ -39,7 +42,10 @@ export default class{
                 uMouse: {value: new THREE.Vector2(0, 0)},
                 uRes: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
                 uRatio: {value: this.size.el.h / this.size.el.w},
-                uTime: {value: null}
+                uTime: {value: null},
+                uBoundary: {value: this.param.boundary},
+                uRadius: {value: this.param.radius},
+                uBlur: {value: this.param.blur}
             }
         })
         this.mesh = new THREE.Mesh(geometry, material)

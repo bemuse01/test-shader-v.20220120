@@ -15,6 +15,9 @@ export default {
         uniform vec2 uRes;
         uniform float uRatio;
         uniform float uTime;
+        uniform float uBoundary;
+        uniform float uRadius;
+        uniform float uBlur;
 
         varying vec2 vUv;
 
@@ -28,10 +31,6 @@ export default {
 
         ${ShaderMethod.executeNormalizing()}
         ${ShaderMethod.snoise3D()}
-
-        const float blur = 99.0;
-        const float radius = 100.0;
-        const float toPer = radius - blur;
 
         void main(){
             // example
@@ -49,8 +48,8 @@ export default {
             vec2 mouse = uMouse * uRes * 0.5;
 
             float n = executeNormalizing(snoise3D(vec3(st * 0.01, uTime * 0.001)), 0.0, 1.0, -1.0, 1.0);
-            float r = 70.0 + 30.0 * n;
-            float b = r - 1.0;
+            float r = (uRadius - uBoundary)  + uBoundary * n;
+            float b = r - uBlur;
             float t = r - b;
 
             float d = (r - clamp(distance(st, mouse), b, r)) / t;
