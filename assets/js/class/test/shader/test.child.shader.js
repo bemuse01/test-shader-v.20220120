@@ -14,6 +14,7 @@ export default {
         uniform vec2 uMouse;
         uniform vec2 uRes;
         uniform float uRatio;
+        uniform float uTime;
 
         varying vec2 vUv;
 
@@ -26,8 +27,9 @@ export default {
         }
 
         ${ShaderMethod.executeNormalizing()}
+        ${ShaderMethod.snoise3D()}
 
-        const float blur = 80.0;
+        const float blur = 99.0;
         const float radius = 100.0;
         const float toPer = radius - blur;
 
@@ -46,8 +48,13 @@ export default {
             vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
             vec2 mouse = uMouse * uRes * 0.5;
 
-            float dist = (radius - clamp(distance(st, mouse), blur, radius)) / toPer;
-            vec3 c = vec3(dist);
+            float n = executeNormalizing(snoise3D(vec3(st * 0.01, uTime * 0.001)), 0.0, 1.0, -1.0, 1.0);
+            float r = 70.0 + 30.0 * n;
+            float b = r - 1.0;
+            float t = r - b;
+
+            float d = (r - clamp(distance(st, mouse), b, r)) / t;
+            vec3 c = vec3(d);
 
             
 

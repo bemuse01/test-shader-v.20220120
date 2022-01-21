@@ -69,6 +69,7 @@ export default class{
     // animate
     animate(){
         const {w, h} = this.size.el
+        const time = window.performance.now()
 
         this.vx += (this.ix - this.vx) * this.friction
         this.vy += (this.iy - this.vy) * this.friction
@@ -77,5 +78,6 @@ export default class{
         const y = -(this.vy / h) * 2 + 1
 
         this.mesh.material.uniforms['uMouse'].value = new THREE.Vector2(x, y)
+        this.mesh.material.uniforms['uTime'].value = time
     }
 }
