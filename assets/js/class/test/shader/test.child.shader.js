@@ -66,6 +66,7 @@ export default {
             vec4 finalTex = mix(tex1, tex2, d);
 
 
+            
             // test 2 (ref example)
             // vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
             // vec2 mouse = uMouse * uRes * 0.5;
