@@ -27,6 +27,10 @@ export default {
 
         ${ShaderMethod.executeNormalizing()}
 
+        const float blur = 80.0;
+        const float radius = 100.0;
+        const float toPer = radius - blur;
+
         void main(){
             // example
             // vec2 st = (gl_FragCoord.xy / uRes.xy) - vec2(0.5);
@@ -42,7 +46,7 @@ export default {
             vec2 st = gl_FragCoord.xy - (uRes.xy * 0.5);
             vec2 mouse = uMouse * uRes * 0.5;
 
-            float dist = (100.0 - clamp(distance(st, mouse), 0.0, 100.0)) / 100.0;
+            float dist = (radius - clamp(distance(st, mouse), blur, radius)) / toPer;
             vec3 c = vec3(dist);
 
             
