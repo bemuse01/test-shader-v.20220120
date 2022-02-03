@@ -53,11 +53,11 @@ export default {
 
             float n = snoise3D(vec3(vUv * 10.0, uTime * 0.001));
             float e = executeNormalizing(n, 0.0, 1.0, -1.0, 1.0);
-            float r = (radius - boundary)  + boundary * e;
+            float r = (radius - boundary) + boundary * e;
             float b = r - uBlur;
-            float t = r - b;
+            // float t = r - b;
 
-            float d = (r - clamp(distance(st, mouse), b, r)) / t;
+            float d = (r - clamp(distance(st, mouse), b, r)) / uBlur;
             // vec3 c = vec3(d);
 
             vec4 tex1 = texture(uTexture[0], vUv);
